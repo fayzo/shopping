@@ -1,0 +1,36 @@
+#black {
+  background-color: #333;
+  color: #fff;
+}
+#black .modal-content {
+   background-color: #333;
+  color: "#fff";
+}
+
+#yellow {
+  background-color: #ffc107;
+  color: #343a40;
+}
+#yellow .modal-content {
+  background-color: #ffc107;
+  color: #343a40;
+}
+
+#green {
+  background-color: #28a745;
+  color: #343a40;
+}
+#green .modal-content {
+  background-color: #28a745;
+  color: #343a40;
+}
+
+#white {
+  background-color: none;
+  color: none;
+}
+#white .modal {
+  background-color: none;
+  color: none;
+}
+

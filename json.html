@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function language() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var myObj = JSON.parse(this.responseText);
+                    console.log("Json parsed data is: " + JSON.stringify(myObj));
+                }
+
+            };
+            xmlhttp.open("GET", "object.json", true);
+            xmlhttp.send();
+        }
+    </script>
+</head>
+
+<body onload="language()">
+    <div id="json"></div>
+    <div id="jsona"></div>
+    <div id="js"></div>
+    <!-- <script src="object.json"></script> -->
+    <script>
+        // var imported = document.createElement('script');
+        // imported.src = 'object.json';
+        // document.head.appendChild(imported);
+        // console.log(imported);
+        // $.getScript('/path/to/imported/script.js', function()
+        // {
+        //     // script is now loaded and executed.
+        //     // put your dependent JS here.
+        // }); 
+        // var text = '{ "name":"John", "birth":"1986-12-14", "city":"New York"}';
+        // var obj = JSON.parse(text);
+        // var data = {
+        //     "employees": [
+        //         { "firstName": "John", "lastName": "Doe" },
+        //         { "firstName": "Anna", "lastName": "Smith" },
+        //         { "firstName": "Peter", "lastName": "Jones" }
+        //     ]
+        // };
+        // // var object = JSON.parse(data);
+        // document.getElementById('json').innerHTML = data.employees[0].firstName;
+        // document.getElementById('jsona').innerHTML = data.employees[0].lastName;
+        // obj.birth = new date()
+        // document.getElementById('js').innerHTML = obj.name + '' + obj.city + "" + obj.birth;
+        //  var local_data = data;
+    </script>
+</body>
+
+</html>

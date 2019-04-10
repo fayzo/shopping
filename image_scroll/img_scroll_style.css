@@ -1,0 +1,38 @@
+/* img {
+    width: 200px;
+    height: 150px;
+    padding: 5px;
+} */
+
+/* Custom Arrow */
+
+.prev {
+    color: #999;
+    position: absolute;
+    top: 38%;
+    left: -2em;
+    font-size: 1.5em;
+    
+}
+.prev:hover {
+    cursor: pointer;
+    color: black;
+}
+.next {
+    color: #999;
+    position: absolute;
+    top: 38%;
+    right: -2em;
+    font-size: 1.5em;
+    
+}
+.next:hover {
+    cursor: pointer;
+    color: black;
+}
+
+@media screen and (max-width: 800px) {
+    .next {
+        display: none !important;
+    }
+}
