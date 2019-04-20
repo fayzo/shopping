@@ -19,7 +19,7 @@ if ($_REQUEST['key'] == 'delete') {
     if ($_REQUEST['key'] == 'color') {
 			$id = $db->real_escape_string($_REQUEST['id']);
 			$color = $db->real_escape_string($_REQUEST['color']);
-         $insert= $db->query("UPDATE login SET color='$color' WHERE login_id='$id'");
+         $db->query("UPDATE login SET color='$color' WHERE login_id='$id'");
          $sql= $db->query("SELECT login_id,color FROM login WHERE login_id = '$id' ");
          // echo ($db)? 'good':"ERROR: Could not able to execute $sql.".mysqli_error($db);
         	$data = $sql->fetch_array();
@@ -29,6 +29,20 @@ if ($_REQUEST['key'] == 'delete') {
         	);
            exit(json_encode($jsonArrays));
       }
+
+   if ($_REQUEST['key'] == 'lang') {
+        # code...
+	    $id = $db->real_escape_string($_REQUEST['id']);
+	    $lang = $db->real_escape_string($_REQUEST['lang']);
+       $db->query("UPDATE login SET language ='$lang' WHERE login_id= '$id' ");
+       $sql= $db->query("SELECT login_id, language FROM login WHERE login_id = '$id'");
+       $data = $sql->fetch_array(); 
+       $language = array(
+           'language' => $data['language'],
+        );
+        // echo ($db)? 'good':"ERROR: Could not able to execute $sql.".mysqli_error($db);
+       exit(json_encode($language));
+     }
 
 	if ($_REQUEST['key'] == 'viewORedit') {
 			$rowID = $db->real_escape_string($_REQUEST['rowID']);

@@ -79,7 +79,7 @@ if (!isset($_SESSION['key'])) {
         };
     }
 
-    function color(requests, id) {
+    function colors(requests, id) {
         var xhr = new XMLHttpRequest();
         var url = "valid_db.php?key=color" + '&id=' + id + '&color=' + requests;
         xhr.open("POST", url, true);
@@ -88,21 +88,22 @@ if (!isset($_SESSION['key'])) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                document.getElementsByTagName("body")["id"] = json.color;
-                document.getElementsByClassName("modal-content")["id"] = json.color;
+                var sc = document.body;
+                sc.setAttribute("id", json.color);
+
                 if (json.color == 'black') {
                     document.body.style.backgroundColor = "#333";
                     document.body.style.color = "#fff";
 
-                }else if(json.color == 'yellow') {
+                } else if (json.color == 'yellow') {
                     document.body.style.backgroundColor = "#ffc107";
                     document.body.style.color = "#343a40";
-                    
-                }else if(json.color == 'green') {
+
+                } else if (json.color == 'green') {
                     document.body.style.backgroundColor = "#28a745";
                     document.body.style.color = "#343a40";
 
-                }else {
+                } else {
                     document.body.style.backgroundColor = "#fff";
                     document.body.style.color = "black";
                 }
@@ -115,15 +116,39 @@ if (!isset($_SESSION['key'])) {
             };
         }
     }
+
+    function language(lang, id) {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "valid_db.php?key=lang" + '&id=' + id + '&lang=' + lang;
+        xmlhttp.open("POST", url, true);
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myObj = JSON.parse(this.responseText);
+                var sc = document.body;
+                sc.setAttribute("class", myObj.language);
+                var lang = document.body.className;
+                if (myObj.language == 'rw') {
+                    document.getElementById('json').innerHTML = rw.muraho;
+                } else if (myObj.language == 'fr') {
+                    document.getElementById('json').innerHTML = fr.bonjour;
+                } else {
+                    document.getElementById('json').innerHTML = en.morning;
+                }
+                console.log("Json parsed data is: " + JSON.stringify(myObj));
+                console.log(myObj);
+            }
+        };
+    }
     </script>
 </head>
 <?php  
 include 'db.php';
-$sql= $db->query("SELECT login_id,color FROM login WHERE login_id = $_SESSION[key]");
+$sql= $db->query("SELECT login_id, color, language FROM login WHERE login_id = $_SESSION[key]");
 $data = $sql->fetch_array(); 
 ?>
 
-<body onload="ajax_request();" id='<?php echo $data['color'];?>'>
+<body onload="ajax_request();" id="<?php echo $data['color']; ?>" class="<?php echo $data['language']; ?>">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Dashboard </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
@@ -142,24 +167,42 @@ $data = $sql->fetch_array();
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Post</a>
                 </li>
-
             </ul>
-           
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#" onclick="language('fr',<?php echo $_SESSION['key'];?>);"><img
+                            src="images/flag/iconfinder_Flag_of_France_96147.png" width="30px"></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="language('en',<?php echo $_SESSION['key'];?>);"><img
+                            src="images/flag/iconfinder_Flag_of_United_Kingdom_96354.png" width="30px"></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="language('rw',<?php echo $_SESSION['key'];?>);"><img
+                            src="images/flag/iconfinder_Flag_of_Rwanda_96263.png" width="30px"></a>
+                </li>
+            </ul>
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"><?php echo "Welcome ".$_SESSION['username'];?></a>
                 <div class="dropdown-menu" aria-labelledby="dropdown04">
-                    <a class="dropdown-item bg-light text-dark" href="#" onclick="color('white',<?php echo $_SESSION['key'];?>)">while</a>
-                    <a class="dropdown-item bg-dark text-light" href="#" onclick="color('black',<?php echo $_SESSION['key'];?>)">black</a>
-                    <a class="dropdown-item bg-warning" href="#" onclick="color('yellow',<?php echo $_SESSION['key'];?>)">yellow</a>
-                    <a class="dropdown-item bg-success text-white" href="#" onclick="color('green',<?php echo $_SESSION['key'];?>)">green</a>
-                    <a class="dropdown-item bg-info text-white" href="login/logout.php" >Log out</a>
+                    <div class="dropdown-item bg-light text-dark">
+                        <a class="d-inline-block" href="#" onclick="colors('white',<?php echo $_SESSION['key'];?>)">
+                            <img src="images/color/white.png" width="30px"> </a>
+                        <a href="#" onclick="colors('black',<?php echo $_SESSION['key'];?>)"> <img
+                                src="images/color/black.png" width="30px"></a>
+                        <a href="#" onclick="colors('yellow',<?php echo $_SESSION['key'];?>)"> <img
+                                src="images/color/yellow.png" width="30px"></a>
+                        <a href="#" onclick="colors('green',<?php echo $_SESSION['key'];?>)"> <img
+                                src="images/color/green.png" width="30px"></a>
+                    </div>
+                    <a class="dropdown-item bg-info text-white" href="login/logout.php">Log out</a>
                 </div>
             </div>
-            
+
         </div>
     </nav>
-    
+
     <!-- <p><i class="material-icons"> alarm </i></p> -->
     <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -316,11 +359,6 @@ $data = $sql->fetch_array();
                 </form>
             </div><br>
 
-            <!-- <form id="the-form" action="valid_db.php" enctype="multipart/form-data">
-          <input name="image" type="file">
-          <input type="submit" value="Upload" />
-        </form> -->
-
             <div class="col-md-9">
                 <table class="table table-striped table-hover table-bordered table-responsive ">
                     <thead class="thead-inverse">
@@ -338,12 +376,46 @@ $data = $sql->fetch_array();
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
+        </div> <!-- END OF ROW  -->
+
+        <div id="json"></div>
+
+    </div><!-- END OF CONTAINER  -->
+
     <script src="dist/js/jquery.min.js"></script>
     <script src="dist/js/popper.min.js"></script>
     <script src="dist/js/bootstrap.min.js"></script>
+    <!-- MULTIPLE LANGUAGE  -->
+    <script src="language_rw.js"></script>
+    <script src="language_en.js"></script>
+    <script src="language_fr.js"></script>
+    <!-- MULTIPLE LANGUAGE  -->
+
     <script>
+    var lang = document.body.className;
+    var color = document.body.id;
+    console.log(lang);
+    console.log(color);
+    if (lang == 'rw') {
+        // var json = JSON.stringify(data);
+        // var js = JSON.parse(json);
+        console.log(en.morning);
+        document.getElementById('json').innerHTML = rw.muraho;
+    } else if (lang == 'fr') {
+        console.log(en.morning);
+        document.getElementById('json').innerHTML = fr.bonjour;
+    } else {
+        document.getElementById('json').innerHTML = en.morning;
+        var txt = "alert('foo');";
+
+        // var scriptTag = document.createElement("script");
+        // scriptTag.setAttribute("type", "text/javascript");
+
+        //    // append it in a text node
+        // scriptTag.appendChild(document.createTextNode(txt));
+        // document.getElementsByTagName("head")[0].appendChild(scriptTag);
+    }
+
     // ************************THIS IS VALIDATION OF BOOTSTRAP THAT WORK ONLY FOR HTML NOT PHP ********************
     (function() {
         'use strict';
